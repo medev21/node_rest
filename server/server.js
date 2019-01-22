@@ -3,8 +3,8 @@ const app = express();
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 
-const productRoutes = require('./api/routes/products');
-const orderRoutes = require('./api/routes/orders');
+const productRoutes = require('../api/routes/products');
+const orderRoutes = require('../api/routes/orders');
 
 // app.use((req, res, next) => {
 //     res.status(200).json({
