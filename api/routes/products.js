@@ -79,7 +79,7 @@ router.get('/:productId', (req,res) => {
                 product: doc,
                 request: {
                     type: 'GET',
-                    url: 'http://localhost/products'
+                    url: 'http://localhost:5000/products'
                 }
             });            
         }else{
