@@ -11,9 +11,7 @@ require('dotenv').config();
 const DBUSER = process.env.DBUSER;
 const DBPASSWORD = process.env.DBPASSWORD;
 
-mongoose.connect(`mongodb://${DBUSER}:${DBPASSWORD}@ds261114.mlab.com:61114/node_rest`,
-    {useMongoClient: true}
-);
+mongoose.connect(`mongodb://${DBUSER}:${DBPASSWORD}@ds261114.mlab.com:61114/node_rest`,{ useNewUrlParser: true });
 
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({extended: false}));
