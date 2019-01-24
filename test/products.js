@@ -15,7 +15,9 @@ describe('Products', () => {
             .get('/products')
             .end((err,res) => {
                 res.should.have.status(200);
-                res.body.should.have.property('message');
+                res.body.should.be.an('Object');
+                res.body.should.have.property('count');
+                res.body.should.have.property('products');
                 done();
             });
         });
