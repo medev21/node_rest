@@ -103,7 +103,13 @@ router.patch('/:productId', (req,res) => {
     .exec()
     .then(result => {
         console.log(result);
-        res.status(200).json(result);
+        res.status(200).json({
+            message: "product updated",
+            request: {
+                type: 'GET',
+                url: 'http://localhost:5000/products/' + result._id
+            }
+        });
     })
     .catch(err => {
         console.log(err);
