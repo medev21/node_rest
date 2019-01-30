@@ -1,5 +1,4 @@
-const Products = require('../api/routes/products');
-
+const Product = require('../api/models/products');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../server/server');
@@ -9,15 +8,21 @@ chai.use(chaiHttp);
 
 describe('Products', () => {
 
-    describe('/GET all products', () => {
+    beforeEach((done) => { //Before each test we empty the database
+        Product.deleteMany({}, (err) => { 
+           done();           
+        });        
+    });
+
+    describe('/GET all products - empty', () => {
         it('It should GET', (done) => {
             chai.request(server)
             .get('/products')
             .end((err,res) => {
                 res.should.have.status(200);
                 res.body.should.be.an('Object');
-                res.body.should.have.property('count');
-                res.body.should.have.property('products');
+                res.body.should.have.property('count').eql(0);
+                res.body.should.have.property('products').eql([]);
                 done();
             });
         });
