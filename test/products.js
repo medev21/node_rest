@@ -14,8 +14,8 @@ describe('Products', () => {
         });        
     });
 
-    describe('/GET all products - empty', () => {
-        it('It should GET', (done) => {
+    describe('/GET - products', () => {
+        it('It should GET all products - empty', (done) => {
             chai.request(server)
             .get('/products')
             .end((err,res) => {
@@ -24,6 +24,16 @@ describe('Products', () => {
                 res.body.should.have.property('count').eql(0);
                 res.body.should.have.property('products').eql([]);
                 done();
+            });
+        });
+    });
+
+    describe('/POST - products',() => {
+        it('It should POST a product',(done) => {
+            chai.request(server)
+            .get('/products')
+            .end((err,res) => {
+                res.should.have.status(201);
             });
         });
     });
