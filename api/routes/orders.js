@@ -5,10 +5,24 @@ const Order = require('../models/orders');
 
 router.get('/', (req, res) => {
     Order.find()
+    .select('product quantity _id')
     .exec()
     .then(docs => {
-        console.log(docs);
-        res.status(200).json(docs);
+        res.status(200).json({
+            count: docs.length,
+            orders: docs.map(doc => {
+                return {
+                    _id: doc._id,
+                    product: doc.product,
+                    quantity: doc.quantity,
+                    request: {
+                        type: 'GET',
+                        url: 'http://localhost:5000/order/' + doc._id
+                    }
+                }
+            })
+            
+        });
     })
     .catch(err => {
         console.log(error);
