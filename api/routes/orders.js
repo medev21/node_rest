@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const Order = require('../models/orders');
-
+const Product = require('../models/products');
 router.get('/', (req, res) => {
     Order.find()
     .select('product quantity _id')
@@ -33,12 +33,21 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', (req, res, next) => {
-    const order = new Order({
-        _id: mongoose.Types.ObjectId(),
-        quantity: req.body.quantity,
-        product: req.body.productId
-    });
-    order.save()
+    Product.findById(req.body.productId)
+    .then(product => {
+        if(!product){
+            return res.status(404).json({
+                message: "product not found"
+            })
+            //all subsequent code will not be processed if return is executed
+        }
+        const order = new Order({
+            _id: mongoose.Types.ObjectId(),
+            quantity: req.body.quantity,
+            product: req.body.productId
+        });
+        return order.save();
+    })
     .then(result => {
         console.log(result);
         res.status(201).json({
@@ -50,7 +59,7 @@ router.post('/', (req, res, next) => {
                     product: result.product,
                     quantity: result.quantity
                 },
-                url: 'http://localhost:5000/orders/' + doc._id
+                url: 'http://localhost:5000/orders/' + result._id
             }
         })
     })
@@ -59,7 +68,8 @@ router.post('/', (req, res, next) => {
         res.status(500).json({
             error: err
         })
-    });
+    })
+    
 })
 
 router.get('/:orderId', (req,res) => {
