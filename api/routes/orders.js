@@ -17,7 +17,7 @@ router.get('/', (req, res) => {
                     quantity: doc.quantity,
                     request: {
                         type: 'GET',
-                        url: 'http://localhost:5000/order/' + doc._id
+                        url: 'http://localhost:5000/orders/' + doc._id
                     }
                 }
             })
@@ -41,7 +41,18 @@ router.post('/', (req, res, next) => {
     order.save()
     .then(result => {
         console.log(result);
-        res.status(201).json(result)
+        res.status(201).json({
+            message: 'Order stored',
+            request: {
+                type: 'GET',
+                createdOrder: {
+                    _id: result._id,
+                    product: result.product,
+                    quantity: result.quantity
+                },
+                url: 'http://localhost:5000/orders/' + doc._id
+            }
+        })
     })
     .catch(error => {
         console.log(error);
