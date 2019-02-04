@@ -6,6 +6,9 @@ const Product = require('../models/products');
 router.get('/', (req, res) => {
     Order.find()
     .select('product quantity _id')
+    //populate add info about the product - comment populate to see difference
+    //this is possible with ref in order model
+    .populate('product', 'name')
     .exec()
     .then(docs => {
         res.status(200).json({
@@ -74,6 +77,8 @@ router.post('/', (req, res, next) => {
 
 router.get('/:orderId', (req,res) => {
     Order.findById(request.params.orderId)
+    //populate - get all details about product
+    .populate('product')
     .exec()
     .then(order => {
         if(!order){
