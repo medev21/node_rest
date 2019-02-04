@@ -92,10 +92,23 @@ router.get('/:orderId', (req,res) => {
 });
 
 router.delete('/:orderId', (req,res) => {
-    res.status(200).json({
-        message: 'order is deleted',
-        orderId: req.params.orderId
+    Order.deleteOne({_id: req.params.orderId})
+    .exec()
+    .then(result => {
+        res.status(200).json({
+            message: "order deleted",
+            request: {
+                type: 'POST',
+                url: "http://localhost:5000/orders/",
+                body: {productId: "ID", quantity: "Number"}
+            }
+        });
     })
+    .catch(err => {
+        res.status(500).json({
+            error: err
+        })
+    });
 });
 
 module.exports = router;
