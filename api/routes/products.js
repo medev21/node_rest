@@ -3,7 +3,37 @@ const router = express.Router();
 const Product = require('../models/products');
 const mongoose = require('mongoose');
 const multer = require('multer');
-const upload = multer({dest: 'uploads/'}); //multer will stored incoming files
+
+const storage = multer.diskStorage({
+    destination: function(request, file, callback){
+        callback(null, './uploads/');
+    },
+    filename: function(request, file, callback){
+        callback(null, new Date().toISOString() + file.originalname);
+    }
+});
+
+//only mimetypes
+const fileFilter = (req, file, cb) => {
+    if(file.mimetype === 'image/jpge' || file.mimetype == 'image/png'){
+        //accept the file
+        cb(null,true);
+    }
+    else{
+        //reject a file
+        cb(null,false);
+    }
+};
+
+//multer will stored incoming files
+//add limit restriction
+const upload = multer({
+    storage: storage, 
+    limits: { 
+        fileSize: 1024 * 1024 * 5
+    },
+    fileFilter: fileFilter
+}); 
 
 router.get('/', (req, res,next) => {
     Product.find()
