@@ -14,7 +14,10 @@ const DBPASSWORD = process.env.DBPASSWORD;
 mongoose.connect(`mongodb://${DBUSER}:${DBPASSWORD}@ds261114.mlab.com:61114/node_rest`,{ useNewUrlParser: true });
 
 app.use(morgan('dev'));
-app.use('/uploads/',express.static('uploads')); //makes uploads folder available public
+
+//makes uploads folder available public
+//e.g localhost:3000/uploads/image_name
+app.use('/uploads/',express.static('uploads')); 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
