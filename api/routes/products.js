@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const Product = require('../models/products');
 const mongoose = require('mongoose');
+const multer = require('multer');
+const upload = multer({dest: 'uploads/'}); //multer will stored incoming files
 
 router.get('/', (req, res,next) => {
     Product.find()
@@ -37,8 +39,11 @@ router.get('/', (req, res,next) => {
     });
 });
 
-router.post('/', (req,res,next) => {
+//upload - only get one file
+router.post('/', upload.single('productImage') , (req,res,next) => {
 
+    //req.file is from upload.single
+    console.log(req.file);
     const product = new Product({
         _id: new mongoose.Types.ObjectId,
         name: req.body.name,
