@@ -3,6 +3,7 @@ const router = express.Router();
 const Product = require('../models/products');
 const mongoose = require('mongoose');
 const multer = require('multer');
+const checkAuth = require('../middleware/check-auth');
 
 const storage = multer.diskStorage({
     destination: function(request, file, callback){
@@ -71,7 +72,7 @@ router.get('/', (req, res,next) => {
 });
 
 //upload - only get one file
-router.post('/', upload.single('productImage') , (req,res,next) => {
+router.post('/', checkAuth, upload.single('productImage') , (req,res,next) => {
 
     //req.file is from upload.single
     console.log(req.file);
