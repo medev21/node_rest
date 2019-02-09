@@ -130,7 +130,7 @@ router.get('/:productId', (req,res) => {
     });
 })
 
-router.patch('/:productId', (req,res) => {
+router.patch('/:productId', checkAuth, (req,res) => {
     const id = req.params.productId;
     const updateOps = {};
     //assuming req.body is an array
@@ -155,7 +155,7 @@ router.patch('/:productId', (req,res) => {
     });
 })
 
-router.delete('/:productId', (req,res) => {
+router.delete('/:productId', checkAuth,(req,res) => {
     const id = req.params.productId;
     Product.deleteOne({_id: id})
     .exec()
